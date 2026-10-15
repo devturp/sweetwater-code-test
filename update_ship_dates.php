@@ -1,9 +1,16 @@
 <?php
+    $configPath = __DIR__ . '/.env';
+    if (!is_file($configPath)) {
+        throw new RuntimeException('Database configuration is missing.');
+    }
+
+    $dbConfig = parse_ini_file($configPath, false, INI_SCANNER_RAW);
+    echo "Loaded database configuration from .env" . PHP_EOL;
 
     $pdo = new PDO(
-        'mysql:host=localhost;dbname=sweetwater;charset=utf8mb4',
-        'root',
-        'password',
+        "mysql:host={$dbConfig['DB_HOST']};dbname={$dbConfig['DB_NAME']};charset=utf8mb4",
+        $dbConfig['DB_USER'],
+        $dbConfig['DB_PASSWORD'],
         [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -34,21 +41,9 @@
             $failed++;
             continue;
         }
-        
+
         $dateText = $matches[1];
         $date = DateTimeImmutable::createFromFormat('!m/d/y', $dateText);
-        $errors = DateTimeImmutable::getLastErrors();
-
-        if (
-            $date === false ||
-            ($errors !== false &&
-                ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) ||
-            $date->format('m/d/y') !== $dateText
-        ) {
-            echo "Order {$orderId}: FAILED, invalid date '{$dateText}'." . PHP_EOL;
-            $failed++;
-            continue;
-        }
 
         echo "Order {$orderId}: {$dateText} => "
             . $date->format('Y-m-d H:i:s')
