@@ -1,21 +1,5 @@
 <?php
-    $configPath = __DIR__ . '/.env';
-    if (!is_file($configPath)) {
-        throw new RuntimeException('Database configuration is missing.');
-    }
-
-    $dbConfig = parse_ini_file($configPath, false, INI_SCANNER_RAW);
-    echo "Loaded database configuration from .env" . PHP_EOL;
-
-    $pdo = new PDO(
-        "mysql:host={$dbConfig['DB_HOST']};dbname={$dbConfig['DB_NAME']};charset=utf8mb4",
-        $dbConfig['DB_USER'],
-        $dbConfig['DB_PASSWORD'],
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ]
-    );
+    $pdo = require __DIR__ . '/helpers/database.php';
 
     $orders = $pdo->query(
         'SELECT orderid, comments FROM sweetwater_test ORDER BY orderid'
@@ -56,5 +40,4 @@
     echo "Dry run complete. No database changes made." . PHP_EOL;
     echo "Successful: {$successful}" . PHP_EOL;
     echo "Failed: {$failed}" . PHP_EOL;
-
 ?>
