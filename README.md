@@ -1,5 +1,7 @@
 # Web Programmer Test Project
 
+![Sweet Comments logo](images/sweet-comments.png)
+
 Thanks for your interest in working at Sweetwater! We're always excited to meet awesome people. We've created this test to help us understand your programming chops.
 
 When placing orders on a website, we provide a field for customers to add a quick comment to tell us something we should know about them or their order. We're supplying you a MySQL table with these various comments and want to see your approach the following tasks.
@@ -30,9 +32,13 @@ The shipdate_expected field is currently populated with no date (0000-00-00). So
 - Once you're done, send us the link to your project so we can look it over.
 
 
-## Requirements
-
-- __Commit often.__ We want to see your progress throughout the project.
+## Local database configuration
+ We want to see your progress throughout the project.
 - __Work quickly.__ This project was designed to be completed quickly, so don't spend too much time on it.
 - __Write your own code.__ While we understand that there are pakages out there that take care of common problems, we ultimately want to see what _YOU_ can build, not what someone else has built.
 - __Do your best work.__ We're using this project as a viewport into who you are as a developer. Show us what you can do!
+
+## Developer Notes
+- Once your database table is populated, run the internal script: `php update_ship_dates.php --dryRun false`
+- Start localhost by running `php -S localhost:8000` on your command line
+- Visit the following url in your browser: `http://localhost:8000/report_comments.php`
